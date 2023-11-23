@@ -4,6 +4,7 @@ import java.rmi.ConnectException;
 import java.rmi.Naming;
 import java.util.Scanner;
 
+import com.mdlb.DTOs.LoginResponse;
 import com.mdlb.interfaces.ChatManagementInterface;
 
 public class Client {
@@ -19,10 +20,12 @@ public class Client {
         System.out.println("Password:");
         String password = scanner.next();
 
-        if (RMI.login(username, password)) {
-          System.out.println("Login exitoso");
+        LoginResponse response = RMI.login(username, password);
+
+        if (response.getSuccess()) {
+          System.out.println("Bienvenido " + response.getMessage());
         } else {
-          System.out.println("Login fallido");
+          System.out.println("Error: " + response.getMessage());
         }
 
         scanner.close();

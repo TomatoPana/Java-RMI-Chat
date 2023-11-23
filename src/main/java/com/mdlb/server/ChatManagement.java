@@ -10,6 +10,7 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.ArrayList;
+import com.mdlb.DTOs.LoginResponse;
 
 public class ChatManagement extends UnicastRemoteObject implements ChatManagementInterface {
 
@@ -28,16 +29,16 @@ public class ChatManagement extends UnicastRemoteObject implements ChatManagemen
    * @return true if the login was successful, false otherwise.
    * @throws RemoteException
    */
-  public boolean login(String user, String password) throws RemoteException {
+  public LoginResponse login(String user, String password) throws RemoteException {
     // Iterate through users and check if the user exists and the password is
     // correct. Also check if the user is already logged in.
     for (User u : users) {
       if (u.getUsername().equals(user) && u.getPassword().equals(password) && !u.isOnline()) {
-        return true;
+        return new LoginResponse(true, "Login successful", "token");
       }
     }
 
-    return false;
+    return new LoginResponse(false, "Login failed", null);
   }
 
   /**

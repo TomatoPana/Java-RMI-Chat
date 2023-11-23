@@ -1,6 +1,8 @@
 package com.mdlb.DTOs;
 
-public class LoginResponse {
+import java.io.Serializable;
+
+public class LoginResponse implements Serializable {
   private boolean success;
   private String message;
   private String token;

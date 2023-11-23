@@ -3,8 +3,10 @@ package com.mdlb.interfaces;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
+import com.mdlb.DTOs.LoginResponse;
+
 public interface ChatManagementInterface extends Remote {
-  public boolean login(String username, String password) throws RemoteException;
+  public LoginResponse login(String username, String password) throws RemoteException;
 
   public boolean register(String username, String password, String confirmPassword) throws RemoteException;
 
