@@ -37,7 +37,7 @@ public class ChatManagement extends UnicastRemoteObject implements ChatManagemen
       }
     }
 
-    return true;
+    return false;
   }
 
   /**
@@ -152,7 +152,8 @@ public class ChatManagement extends UnicastRemoteObject implements ChatManagemen
       System.exit(1);
     }
 
-    String address = addresses.get(0);
+    // String address = addresses.get(0);
+    String address = "127.0.0.1";
     int port = 1099;
 
     try {

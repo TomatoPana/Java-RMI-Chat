@@ -1,6 +1,8 @@
 package com.mdlb.DTOs;
 
-// Empty annotation to indicate that a field may be null.
+/**
+ * Annotate that the field can be null.
+ */
 public @interface Nullable {
 
 }
