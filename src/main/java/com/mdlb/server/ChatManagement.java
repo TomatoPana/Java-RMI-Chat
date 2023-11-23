@@ -1,9 +1,10 @@
 package com.mdlb.server;
 
+import com.mdlb.interfaces.ChatManagementInterface;
+import com.mdlb.DTOs.User;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.registry.LocateRegistry;
-import com.mdlb.interfaces.ChatManagementInterface;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -12,8 +13,13 @@ import java.util.ArrayList;
 
 public class ChatManagement extends UnicastRemoteObject implements ChatManagementInterface {
 
+  private ArrayList<User> users;
+
   protected ChatManagement() throws RemoteException {
     super();
+
+    this.users = new ArrayList<>();
+    users.add(new User("test", "test"));
   }
 
   /**
