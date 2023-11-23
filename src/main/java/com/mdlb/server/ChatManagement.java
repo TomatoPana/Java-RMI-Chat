@@ -28,7 +28,14 @@ public class ChatManagement extends UnicastRemoteObject implements ChatManagemen
    * @return true if the login was successful, false otherwise.
    * @throws RemoteException
    */
-  public boolean login() throws RemoteException {
+  public boolean login(String user, String password) throws RemoteException {
+    // Iterate through users and check if the user exists and the password is
+    // correct. Also check if the user is already logged in.
+    for (User u : users) {
+      if (u.getUsername().equals(user) && u.getPassword().equals(password) && !u.isOnline()) {
+        return true;
+      }
+    }
 
     return true;
   }
@@ -39,9 +46,21 @@ public class ChatManagement extends UnicastRemoteObject implements ChatManagemen
    * @return true if the registration was successful, false otherwise.
    * @throws RemoteException
    */
-  public boolean register() throws RemoteException {
+  public boolean register(String username, String password, String confirmPassword) throws RemoteException {
+    // Check if the username is already taken.
+    for (User u : users) {
+      if (u.getUsername().equals(username)) {
+        return false;
+      }
+    }
 
-    return true;
+    // Check if the password and confirm password match.
+    if (!password.equals(confirmPassword)) {
+      return false;
+    }
+
+    // Add the user to the list of users.
+    return users.add(new User(username, password));
   }
 
   /**

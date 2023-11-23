@@ -4,9 +4,9 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface ChatManagementInterface extends Remote {
-  public boolean login() throws RemoteException;
+  public boolean login(String username, String password) throws RemoteException;
 
-  public boolean register() throws RemoteException;
+  public boolean register(String username, String password, String confirmPassword) throws RemoteException;
 
   public boolean logout() throws RemoteException;
 

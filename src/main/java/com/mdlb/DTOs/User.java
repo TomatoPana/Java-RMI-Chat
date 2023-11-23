@@ -5,12 +5,14 @@ public class User {
   private String password;
   private String ip;
   private int port;
+  private boolean online;
 
   public User(String username, String password, @Nullable String ip, int port) {
     this.username = username;
     this.password = password;
     this.ip = ip;
     this.port = port;
+    this.online = false;
   }
 
   public User(String username, String password) {
@@ -18,6 +20,7 @@ public class User {
     this.password = password;
     this.ip = null;
     this.port = 0;
+    this.online = false;
   }
 
   public User() {
@@ -25,6 +28,7 @@ public class User {
     this.password = null;
     this.ip = null;
     this.port = 0;
+    this.online = false;
   }
 
   public String getUsername() {
@@ -43,6 +47,10 @@ public class User {
     return this.port;
   }
 
+  public boolean isOnline() {
+    return this.online;
+  }
+
   public void setUsername(String username) {
     this.username = username;
   }
@@ -57,5 +65,9 @@ public class User {
 
   public void setPort(int port) {
     this.port = port;
+  }
+
+  public void setOnline(boolean online) {
+    this.online = online;
   }
 }
