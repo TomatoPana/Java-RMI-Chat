@@ -7,4 +7,5 @@ module com.mdlb {
     opens com.mdlb to javafx.fxml;
 
     exports com.mdlb;
+    exports com.mdlb.interfaces;
 }

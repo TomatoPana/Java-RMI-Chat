@@ -2,7 +2,13 @@ package com.mdlb.server;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.rmi.registry.LocateRegistry;
 import com.mdlb.interfaces.ChatManagementInterface;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
+import java.util.ArrayList;
 
 public class ChatManagement extends UnicastRemoteObject implements ChatManagementInterface {
 
@@ -88,8 +94,52 @@ public class ChatManagement extends UnicastRemoteObject implements ChatManagemen
     return true;
   }
 
-  public static void main(String[] args) {
-
+  private static ArrayList<String> getLocalAddress() {
+    ArrayList<String> foundAddresses = new ArrayList<String>();
+    try {
+      Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+      while (interfaces.hasMoreElements()) {
+        NetworkInterface networkInterface = interfaces.nextElement();
+        if (!networkInterface.isUp())
+          continue;
+        Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
+        while (addresses.hasMoreElements()) {
+          InetAddress address = addresses.nextElement();
+          if (address.isLoopbackAddress())
+            continue;
+          if (address.isSiteLocalAddress())
+            foundAddresses.add(address.getHostAddress());
+        }
+      }
+    } catch (SocketException e) {
+      System.err.println(
+          "Error getting network interfaces. Either the host is not connected to a network or the network is down.");
+      e.printStackTrace();
+    }
+    return foundAddresses;
   }
 
+  public static void main(String[] args) {
+    ArrayList<String> addresses = getLocalAddress();
+
+    if (addresses.size() == 0) {
+      System.err.println("No local addresses found. Exiting...");
+      System.exit(1);
+    }
+
+    String address = addresses.get(0);
+    int port = 1099;
+
+    try {
+      LocateRegistry.createRegistry(port);
+      ChatManagementInterface chatManagement = new ChatManagement();
+      java.rmi.Naming.rebind("rmi://" + address + ":" + port + "/ChatManagement", chatManagement);
+      System.out.println("ChatManagement bound in registry at rmi://" + address + ":" + port + "/ChatManagement");
+    } catch (Exception e) {
+      System.err.println("Error parsing arguments. Exiting...");
+      e.printStackTrace();
+      System.exit(1);
+    }
+
+  }
 }
