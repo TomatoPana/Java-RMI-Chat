@@ -20,9 +20,10 @@ public class App extends Application {
         // scene = new Scene(loadFXML("primary"), 640, 480);
         // stage.setScene(scene);
         // stage.show();
-        Parent root = FXMLLoader.load(getClass().getResource("chat.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("home.fxml"));
         stage.setTitle("Chat Application");
-        stage.setScene(new Scene(root, 800, 600));
+        stage.setScene(new Scene(root, 400, 300));
+        stage.setResizable(false);
         stage.show();
     }
 
