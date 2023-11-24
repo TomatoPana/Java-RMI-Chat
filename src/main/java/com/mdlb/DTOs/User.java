@@ -6,6 +6,7 @@ public class User {
   private String ip;
   private int port;
   private boolean online;
+  private String token;
 
   public User(String username, String password, @Nullable String ip, int port) {
     this.username = username;
@@ -51,6 +52,10 @@ public class User {
     return this.online;
   }
 
+  public String getToken() {
+    return this.token;
+  }
+
   public void setUsername(String username) {
     this.username = username;
   }
@@ -69,5 +74,9 @@ public class User {
 
   public void setOnline(boolean online) {
     this.online = online;
+  }
+
+  public void setToken(String token) {
+    this.token = token;
   }
 }

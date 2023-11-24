@@ -9,8 +9,10 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
+import java.util.Random;
 import java.util.ArrayList;
 import com.mdlb.DTOs.LoginResponse;
+import com.mdlb.DTOs.RegisterResponse;
 
 public class ChatManagement extends UnicastRemoteObject implements ChatManagementInterface {
 
@@ -21,6 +23,8 @@ public class ChatManagement extends UnicastRemoteObject implements ChatManagemen
 
     this.users = new ArrayList<>();
     users.add(new User("test", "test"));
+    users.add(new User("mdlb", "123456"));
+    users.add(new User("root", "123456"));
   }
 
   /**
@@ -33,12 +37,37 @@ public class ChatManagement extends UnicastRemoteObject implements ChatManagemen
     // Iterate through users and check if the user exists and the password is
     // correct. Also check if the user is already logged in.
     for (User u : users) {
-      if (u.getUsername().equals(user) && u.getPassword().equals(password) && !u.isOnline()) {
-        return new LoginResponse(true, "Login successful", "token");
+      if (u.getUsername().equals(user) && u.getPassword().equals(password)) {
+        if (u.isOnline()) {
+          return new LoginResponse(false, "The user already has an active session", null);
+        }
+
+        String token = this.generateToken();
+        LoginResponse response = new LoginResponse(true, "Login successful", token);
+        u.setToken(token);
+
+        return response;
       }
     }
 
-    return new LoginResponse(false, "Login failed", null);
+    return new LoginResponse(false, "Username/Password Incorrect", null);
+  }
+
+  /**
+   * Generate a random string of 16 characters.
+   * 
+   * @return a random string of 16 characters.
+   */
+  public String generateToken() {
+    String source = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    StringBuilder result = new StringBuilder(16);
+    Random random = new Random();
+    for (int i = 0; i < 16; i++) {
+      int index = random.nextInt(source.length());
+      result.append(source.charAt(index));
+    }
+    String randomString = result.toString();
+    return randomString;
   }
 
   /**
@@ -47,30 +76,53 @@ public class ChatManagement extends UnicastRemoteObject implements ChatManagemen
    * @return true if the registration was successful, false otherwise.
    * @throws RemoteException
    */
-  public boolean register(String username, String password, String confirmPassword) throws RemoteException {
+  public RegisterResponse register(String username, String password, String confirmPassword) throws RemoteException {
     // Check if the username is already taken.
     for (User u : users) {
       if (u.getUsername().equals(username)) {
-        return false;
+        return new RegisterResponse(false, "The username already exists.");
       }
     }
 
     // Check if the password and confirm password match.
     if (!password.equals(confirmPassword)) {
-      return false;
+      return new RegisterResponse(false, "The password doesnt match.");
     }
 
     // Add the user to the list of users.
-    return users.add(new User(username, password));
+    users.add(new User(username, password));
+    return new RegisterResponse(true, "Registration successful.");
+  }
+
+  /**
+   * Verify if a token is a valid token
+   * 
+   * @param token The token
+   * @return true if the token is valid, false otherwise.
+   */
+  public boolean validateToken(String token) {
+    for (User u : users) {
+      if (u.getToken().equals(token)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
    * Attempt to logout from the chat server.
    * 
+   * @param user The token of the user.
    * @return true if the logout was successful, false otherwise.
    * @throws RemoteException
    */
-  public boolean logout() throws RemoteException {
+  public boolean logout(User user) throws RemoteException {
+    // Check if the token is valid.
+    if (!this.validateToken(user.getToken())) {
+      return false;
+    }
+
+    user.setOnline(false);
 
     return true;
   }
@@ -81,7 +133,11 @@ public class ChatManagement extends UnicastRemoteObject implements ChatManagemen
    * @return true if the message was sent successfully, false otherwise.
    * @throws RemoteException
    */
-  public boolean sendMessage() throws RemoteException {
+  public boolean sendMessage(User user) throws RemoteException {
+    // Check if the token is valid.
+    if (!this.validateToken(user.getToken())) {
+      return false;
+    }
 
     return true;
   }
@@ -93,8 +149,11 @@ public class ChatManagement extends UnicastRemoteObject implements ChatManagemen
    *         otherwise.
    * @throws RemoteException
    */
-  public boolean receivedMessage() throws RemoteException {
-
+  public boolean receivedMessage(User user) throws RemoteException {
+    // Check if the token is valid.
+    if (!this.validateToken(user.getToken())) {
+      return false;
+    }
     return true;
   }
 
@@ -104,8 +163,11 @@ public class ChatManagement extends UnicastRemoteObject implements ChatManagemen
    * @return true if the message was marked as read successfully, false otherwise.
    * @throws RemoteException
    */
-  public boolean readMessage() throws RemoteException {
-
+  public boolean readMessage(User user) throws RemoteException {
+    // Check if the token is valid.
+    if (!this.validateToken(user.getToken())) {
+      return false;
+    }
     return true;
   }
 
@@ -115,8 +177,11 @@ public class ChatManagement extends UnicastRemoteObject implements ChatManagemen
    * @return true if the broadcast message was sent successfully, false otherwise.
    * @throws RemoteException
    */
-  public boolean sendBroadcastMessage() throws RemoteException {
-
+  public boolean sendBroadcastMessage(User user) throws RemoteException {
+    // Check if the token is valid.
+    if (!this.validateToken(user.getToken())) {
+      return false;
+    }
     return true;
   }
 
