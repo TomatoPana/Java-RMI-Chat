@@ -17,18 +17,20 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        // scene = new Scene(loadFXML("primary"), 640, 480);
-        // stage.setScene(scene);
-        // stage.show();
-        Parent root = FXMLLoader.load(getClass().getResource("home.fxml"));
+        scene = new Scene(loadFXML("home"), 400, 300);
+        stage.setScene(scene);
         stage.setTitle("Chat Application");
-        stage.setScene(new Scene(root, 400, 300));
+        stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
     }
 
-    static void setRoot(String fxml) throws IOException {
+    public static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
+    }
+
+    public static Scene getScene() {
+        return scene;
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
