@@ -10,17 +10,31 @@ import java.util.ArrayList;
 import com.mdlb.DTOs.LoginResponse;
 import com.mdlb.DTOs.RegisterResponse;
 
-public class ChatManagement extends UnicastRemoteObject implements ChatManagementInterface {
+public class ServerManagement extends UnicastRemoteObject implements ChatManagementInterface {
 
   private ArrayList<User> users;
 
-  protected ChatManagement() throws RemoteException {
+  private String ip;
+
+  private String port;
+
+  public ServerManagement() throws RemoteException {
     super();
 
     this.users = new ArrayList<>();
     users.add(new User("test", "test"));
     users.add(new User("mdlb", "123456"));
     users.add(new User("root", "123456"));
+  }
+
+  public ServerManagement setIp(String ip) {
+    this.ip = ip;
+    return this;
+  }
+
+  public ServerManagement setPort(String port) {
+    this.port = port;
+    return this;
   }
 
   /**
@@ -181,21 +195,9 @@ public class ChatManagement extends UnicastRemoteObject implements ChatManagemen
     return true;
   }
 
-  public static void main(String[] args) {
-    // String address = addresses.get(0);
-    String address = "127.0.0.1";
-    int port = 1099;
-
-    try {
-      LocateRegistry.createRegistry(port);
-      ChatManagementInterface chatManagement = new ChatManagement();
-      java.rmi.Naming.rebind("rmi://" + address + ":" + port + "/ChatManagement", chatManagement);
-      System.out.println("ChatManagement bound in registry at rmi://" + address + ":" + port + "/ChatManagement");
-    } catch (Exception e) {
-      System.err.println("Error parsing arguments. Exiting...");
-      e.printStackTrace();
-      System.exit(1);
-    }
-
+  public void start() throws Exception {
+    LocateRegistry.createRegistry(Integer.parseInt(this.port));
+    ChatManagementInterface chatManagement = this;
+    java.rmi.Naming.rebind("rmi://" + this.ip + ":" + this.port + "/ChatManagement", chatManagement);
   }
 }
