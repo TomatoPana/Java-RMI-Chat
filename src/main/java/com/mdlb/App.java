@@ -1,5 +1,7 @@
 package com.mdlb;
 
+import com.mdlb.DTOs.ServerConfiguration;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,9 +16,12 @@ import java.io.IOException;
 public class App extends Application {
 
     private static Scene scene;
+    private static Stage stage;
+    private static ServerConfiguration serverConfiguration;
 
     @Override
     public void start(Stage stage) throws IOException {
+        App.stage = stage;
         scene = new Scene(loadFXML("home"), 400, 300);
         stage.setScene(scene);
         stage.setTitle("Chat Application");
@@ -31,6 +36,18 @@ public class App extends Application {
 
     public static Scene getScene() {
         return scene;
+    }
+
+    public static Stage getStage() {
+        return stage;
+    }
+
+    public static void setServerConfiguration(ServerConfiguration serverConfiguration) {
+        App.serverConfiguration = serverConfiguration;
+    }
+
+    public static ServerConfiguration getServerConfiguration() {
+        return serverConfiguration;
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
