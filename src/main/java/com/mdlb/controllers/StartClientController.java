@@ -1,11 +1,14 @@
-package com.mdlb;
+package com.mdlb.controllers;
 
 import java.io.IOException;
+
+import com.mdlb.App;
+
 import javafx.fxml.FXML;
 
-public class PrimaryController {
+public class StartClientController {
 
-    public PrimaryController() {
+    public StartClientController() {
         System.out.println("PrimaryController");
     }
 
