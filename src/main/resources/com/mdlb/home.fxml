@@ -7,15 +7,15 @@
 <?import javafx.geometry.Insets?>
 
 <StackPane xmlns="http://javafx.com/javafx/8.0.171"
-  xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mdlb.controllers.HomeController">
-  <VBox alignment="CENTER" spacing="10">
-    <Label text="Welcome to the chat application" style="-fx-font-size: 20px;" />
-    <Label text="Choose the program mode" VBox.vgrow="NEVER">
-      <VBox.margin>
-        <Insets top="24" />
-      </VBox.margin>
-    </Label>
-    <Button fx:id="loadServerApplication" text="Set the program as the server" onAction="#loadServerApplication"/>
-    <Button fx:id="loadClientApplication" text="Set the program as the client" onAction="#loadClientApplication"/>
-  </VBox>
+    xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mdlb.controllers.HomeController">
+    <VBox alignment="CENTER" spacing="10">
+        <Label text="Welcome to the chat application" style="-fx-font-size: 20px;" />
+        <Label text="Choose the program mode" VBox.vgrow="NEVER">
+            <VBox.margin>
+                <Insets top="24" />
+            </VBox.margin>
+        </Label>
+        <Button fx:id="loadServerApplication" text="Set the program as the server" onAction="#loadServerApplication"/>
+        <Button fx:id="loadClientApplication" text="Set the program as the client" onAction="#loadClientApplication"/>
+    </VBox>
 </StackPane>

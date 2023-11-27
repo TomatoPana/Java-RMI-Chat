@@ -8,37 +8,38 @@ import com.mdlb.DTOs.LoginResponse;
 import com.mdlb.interfaces.ChatManagementInterface;
 
 public class Client {
-  public static void main(String[] args) throws InterruptedException {
-    boolean retry = false;
-    do {
-      try {
-        ChatManagementInterface RMI = (ChatManagementInterface) Naming.lookup("//127.0.0.1:6969/ChatManagement");
+    public static void main(String[] args) throws InterruptedException {
+        boolean retry = false;
+        do {
+            try {
+                ChatManagementInterface RMI = (ChatManagementInterface) Naming
+                        .lookup("//127.0.0.1:6969/ChatManagement");
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Username:");
-        String username = scanner.next();
-        System.out.println("Password:");
-        String password = scanner.next();
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("Username:");
+                String username = scanner.next();
+                System.out.println("Password:");
+                String password = scanner.next();
 
-        LoginResponse response = RMI.login(username, password);
+                LoginResponse response = RMI.login(username, password);
 
-        if (response.getSuccess()) {
-          System.out.println("Bienvenido " + response.getMessage());
-        } else {
-          System.out.println("Error: " + response.getMessage());
-        }
+                if (response.getSuccess()) {
+                    System.out.println("Bienvenido " + response.getMessage());
+                } else {
+                    System.out.println("Error: " + response.getMessage());
+                }
 
-        scanner.close();
+                scanner.close();
 
-        System.out.println("Invocación remota exitosa");
-        retry = false;
-      } catch (ConnectException e) {
-        System.err.println("Conexión rechazada, reintentando en 5 segundos...");
-        Thread.sleep(5000);
-        retry = true;
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    } while (retry == true);
-  }
+                System.out.println("Invocación remota exitosa");
+                retry = false;
+            } catch (ConnectException e) {
+                System.err.println("Conexión rechazada, reintentando en 5 segundos...");
+                Thread.sleep(5000);
+                retry = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } while (retry == true);
+    }
 }
