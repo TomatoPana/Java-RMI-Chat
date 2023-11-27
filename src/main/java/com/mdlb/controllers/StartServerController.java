@@ -1,6 +1,8 @@
-package com.mdlb;
+package com.mdlb.controllers;
 
 import java.io.IOException;
+
+import com.mdlb.App;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,8 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ComboBox;
 
-public class SecondaryController {
-
+public class StartServerController {
     @FXML
     private ComboBox<String> ipComboBox;
 

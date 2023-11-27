@@ -12,7 +12,7 @@ public class HomeController {
   @FXML
   private void loadServerApplication(ActionEvent event) throws IOException {
     System.out.println("Load Server View");
-    App.setRoot("secondary");
+    App.setRoot("server/start_server");
   }
 
   @FXML
