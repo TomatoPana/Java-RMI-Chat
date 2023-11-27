@@ -1,6 +1,9 @@
 package com.mdlb.server;
 
 import com.mdlb.interfaces.ChatManagementInterface;
+
+import javafx.scene.control.ListView;
+
 import com.mdlb.DTOs.User;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -18,6 +21,8 @@ public class ServerManagement extends UnicastRemoteObject implements ChatManagem
 
   private String port;
 
+  private ListView<String> logger;
+
   public ServerManagement() throws RemoteException {
     super();
 
@@ -25,6 +30,11 @@ public class ServerManagement extends UnicastRemoteObject implements ChatManagem
     users.add(new User("test", "test"));
     users.add(new User("mdlb", "123456"));
     users.add(new User("root", "123456"));
+  }
+
+  public ServerManagement setLogger(ListView<String> logger) {
+    this.logger = logger;
+    return this;
   }
 
   public ServerManagement setIp(String ip) {
@@ -56,10 +66,11 @@ public class ServerManagement extends UnicastRemoteObject implements ChatManagem
         LoginResponse response = new LoginResponse(true, "Login successful", token);
         u.setToken(token);
 
+        this.logger.getItems().add("User " + u.getUsername() + " logged in with ip " + u.getIp() + " and port "
+            + u.getPort() + " with token " + u.getToken());
         return response;
       }
     }
-
     return new LoginResponse(false, "Username/Password Incorrect", null);
   }
 

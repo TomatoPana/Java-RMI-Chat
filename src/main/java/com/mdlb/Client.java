@@ -12,7 +12,7 @@ public class Client {
     boolean retry = false;
     do {
       try {
-        ChatManagementInterface RMI = (ChatManagementInterface) Naming.lookup("//127.0.0.1:1099/ChatManagement");
+        ChatManagementInterface RMI = (ChatManagementInterface) Naming.lookup("//127.0.0.1:6969/ChatManagement");
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Username:");
